@@ -85,42 +85,42 @@ impl BotStrategy {
     fn execute_action(
         accounts: ExecuteStrategy,
         block: &StrategyBlock,
+        state: &mut ExecutionState,
     ) -> Result<()> {
-        match block.action_type {
-            ActionType::Swap => {
-                match block.dex {
-                    DexType::Raydium => {
+        match block.config.action_type {
+            Some(ActionType::Swap) => {
+                match block.config.parameters.dex_type {
+                    Some(DexType::Raydium) => {
                         RaydiumDex::swap(
                             accounts.into(),
-                            block.config.amount,
-                            block.config.minimum_out,
+                            block.config.parameters.amount.unwrap(),
+                            block.config.parameters.token_address.unwrap(),
+                            block.config.parameters.slippage_bps.unwrap(),
                         )?;
                     },
-                    DexType::Jupiter => {
+                    Some(DexType::Jupiter) => {
                         JupiterDex::execute_swap(
                             accounts.into(),
-                            block.config.amount,
-                            block.config.minimum_out,
-                            block.config.slippage_bps,
+                            block.config.parameters.amount.unwrap(),
+                            block.config.parameters.token_address.unwrap(),
+                            block.config.parameters.slippage_bps.unwrap(),
                         )?;
                     },
-                    DexType::Serum => {
+                    Some(DexType::Serum) => {
                         SerumDex::place_market_order(
                             accounts.into(),
-                            block.config.side,
-                            block.config.amount,
+                            block.config.parameters.amount.unwrap(),
+                            block.config.parameters.token_address.unwrap(),
                         )?;
                     },
+                    None => return Err(TradingBotError::InvalidDexType.into()),
                 }
             },
-            ActionType::LiquidityProvision => {
-                // Implement liquidity provision
-            },
-            ActionType::Stake => {
-                // Implement staking
-            },
+            // Add other action types
+            _ => return Err(TradingBotError::InvalidActionType.into()),
         }
 
+        state.record_action_execution(block)?;
         Ok(())
     }
 
@@ -217,49 +217,6 @@ impl BotStrategy {
         // Update strategy metrics
         strategy.update_metrics(&execution_state)?;
 
-        Ok(())
-    }
-
-    // Execute DEX-specific actions
-    fn execute_action(
-        accounts: ExecuteStrategy,
-        block: &StrategyBlock,
-        state: &mut ExecutionState,
-    ) -> Result<()> {
-        match block.config.action_type {
-            Some(ActionType::Swap) => {
-                match block.config.parameters.dex_type {
-                    Some(DexType::Raydium) => {
-                        RaydiumDex::swap(
-                            accounts.into(),
-                            block.config.parameters.amount.unwrap(),
-                            block.config.parameters.token_address.unwrap(),
-                            block.config.parameters.slippage_bps.unwrap(),
-                        )?;
-                    },
-                    Some(DexType::Jupiter) => {
-                        JupiterDex::execute_swap(
-                            accounts.into(),
-                            block.config.parameters.amount.unwrap(),
-                            block.config.parameters.token_address.unwrap(),
-                            block.config.parameters.slippage_bps.unwrap(),
-                        )?;
-                    },
-                    Some(DexType::Serum) => {
-                        SerumDex::place_market_order(
-                            accounts.into(),
-                            block.config.parameters.amount.unwrap(),
-                            block.config.parameters.token_address.unwrap(),
-                        )?;
-                    },
-                    None => return Err(TradingBotError::InvalidDexType.into()),
-                }
-            },
-            // Add other action types
-            _ => return Err(TradingBotError::InvalidActionType.into()),
-        }
-
-        state.record_action_execution(block)?;
         Ok(())
     }
 }

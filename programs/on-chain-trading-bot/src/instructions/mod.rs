@@ -1,9 +1,10 @@
-pub mod initialize;
-pub mod execute_trade;
-pub mod update_strategy;
-pub mod manage_risk;
+// pub mod initialize;
+pub mod close;
+pub mod setup_dca;
+pub mod airdrop;
 
-pub use initialize::*;
-pub use execute_trade::*;
-pub use update_strategy::*;
-pub use manage_risk::*; 
+// pub use initialize::*;
+pub use close::*;
+pub use setup_dca::*;
+pub use airdrop::*;
+
