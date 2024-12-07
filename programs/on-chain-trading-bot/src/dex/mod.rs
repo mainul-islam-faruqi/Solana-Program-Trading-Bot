@@ -2,7 +2,6 @@ pub mod jupiter;
 pub mod raydium;
 
 use anchor_lang::prelude::*;
-
 // Common DEX traits and types
 pub trait DexSwap {
     fn execute_swap(

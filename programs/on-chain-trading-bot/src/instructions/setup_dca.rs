@@ -17,18 +17,9 @@ pub struct SetupDca<'info> {
     #[account(mut)]
     jup_dca: UncheckedAccount<'info>,
 
-    /// CHECK: Jup DCA will check
-    #[account(mut)]
-    jup_dca_in_ata: UncheckedAccount<'info>,
-
-    /// CHECK: Jup DCA will check
-    #[account(mut)]
-    jup_dca_out_ata: UncheckedAccount<'info>,
-
-    /// CHECK: Jup DCA will check
-    jup_dca_event_authority: UncheckedAccount<'info>,
-
+    /// CHECK: Input token mint
     input_mint: Box<Account<'info, Mint>>,
+    /// CHECK: Output token mint
     output_mint: Box<Account<'info, Mint>>,
 
     #[account(mut)]

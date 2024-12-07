@@ -5,14 +5,14 @@ anchor_version = "0.28.0"
 seeds = false
 skip-lint = false
 
-[programs.localnet]
+[programs.devnet]
 on_chain_trading_bot = "3seUuDx9nQXF18sEtcyZBkrf4YQjxHJuYFS26JVn1ERK"
 
 [registry]
 url = "https://api.apr.dev"
 
 [provider]
-cluster = "localnet"
+cluster = "devnet"
 wallet = "~/.config/solana/id.json"
 
 [scripts]

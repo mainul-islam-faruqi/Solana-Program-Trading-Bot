@@ -50,6 +50,11 @@ anchor test
 anchor deploy
 ```
 
+Program Id: 7Jg27CTDL38Pq3ErvTbxwc3FSjz9oqZN5GMXUAjnt9Dz
+
+Signature: 3L9MkyLhfUbrkj7wF7g24StMFcawMA8TftRG3ejRAPGQfxpVZSdKZATn83kViQh2kGDhydSFwYgk2pzLtjeDw8D9
+
+
 ## Program Structure
 
 ```
